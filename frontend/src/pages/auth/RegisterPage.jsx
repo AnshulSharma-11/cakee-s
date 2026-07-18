@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { UserPlus, Store, ShoppingBag } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { homeForRole } from '../../components/ProtectedRoute'
@@ -22,6 +22,7 @@ const emptyForm = {
 export default function RegisterPage() {
   const { registerVendor, registerCustomer } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [role, setRole] = useState('CUSTOMER')
   const [form, setForm] = useState(emptyForm)
@@ -51,7 +52,10 @@ export default function RegisterPage() {
               password: form.password,
               phone: form.phone,
             })
-      navigate(homeForRole(res.role), { replace: true })
+      const redirectTo = res.role === 'CUSTOMER' && location.state?.from?.pathname
+        ? location.state.from.pathname
+        : homeForRole(res.role)
+      navigate(redirectTo, { replace: true })
     } catch (err) {
       setError(extractErrorMessage(err))
     } finally {

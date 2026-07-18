@@ -1,5 +1,5 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom'
-import { LogOut, User, LayoutGrid } from 'lucide-react'
+import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom'
+import { LogOut, User, LayoutGrid, Search } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { homeForRole } from '../components/ProtectedRoute'
 import Logo from '../components/ui/Logo'
@@ -16,9 +16,23 @@ export default function MainLayout() {
 
   return (
     <div className="min-h-screen flex flex-col bg-cream">
-      <header className="bg-card">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-card/90 backdrop-blur supports-[backdrop-filter]:bg-card/80 shadow-sm">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
           <Logo to={isAuthenticated ? homeForRole(user.role) : '/'} />
+
+          <nav className="hidden md:flex items-center gap-1">
+            <NavLink
+              to="/products"
+              className={({ isActive }) =>
+                `flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                  isActive ? 'bg-blush text-berry-dark' : 'text-cocoa-soft hover:text-cocoa hover:bg-cream-deep'
+                }`
+              }
+            >
+              <Search size={15} />
+              Browse cakes
+            </NavLink>
+          </nav>
 
           <div className="flex items-center gap-3">
             {isAuthenticated ? (
@@ -61,8 +75,15 @@ export default function MainLayout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-blush px-6 py-6 text-center text-sm text-cocoa-soft">
-        © {new Date().getFullYear()} CakeShop — baked with care
+      <footer className="border-t border-blush">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <Logo />
+          <div className="flex items-center gap-5 text-sm text-cocoa-soft">
+            <Link to="/products" className="hover:text-cocoa">Browse cakes</Link>
+            <Link to="/register" className="hover:text-cocoa">Sell on CakeShop</Link>
+          </div>
+          <p className="text-sm text-cocoa-soft">© {new Date().getFullYear()} CakeShop — baked with care</p>
+        </div>
       </footer>
     </div>
   )

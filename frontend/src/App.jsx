@@ -11,6 +11,9 @@ import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ProfilePage from './pages/profile/ProfilePage'
 
+import PublicCatalogPage from './pages/public/CatalogPage'
+import PublicProductDetailPage from './pages/public/ProductDetailPage'
+
 import ProductListPage from './pages/vendor/ProductListPage'
 import ProductFormPage from './pages/vendor/ProductFormPage'
 import CategoryManagerPage from './pages/vendor/CategoryManagerPage'
@@ -41,6 +44,10 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
 
+            {/* public storefront — browsable before login */}
+            <Route path="/products" element={<PublicCatalogPage />} />
+            <Route path="/products/:productId" element={<PublicProductDetailPage />} />
+
             {/* any authenticated role */}
             <Route element={<ProtectedRoute />}>
               <Route path="/profile" element={<ProfilePage />} />
@@ -56,6 +63,7 @@ function App() {
                 <Route path="categories" element={<CategoryManagerPage />} />
               </Route>
             </Route>
+
             {/* customer-only */}
             <Route element={<ProtectedRoute roles={['CUSTOMER']} />}>
               <Route path="/customer" element={<CustomerLayout />}>
