@@ -8,6 +8,8 @@ import Input from '../../components/ui/Input'
 import Button from '../../components/ui/Button'
 import Alert from '../../components/ui/Alert'
 import Logo from '../../components/ui/Logo'
+import PhotoBackdrop from '../../components/ui/PhotoBackdrop'
+import PHOTO, { unsplash } from '../../data/photos'
 import { extractErrorMessage } from '../../services/errorUtils'
 
 export default function LoginPage() {
@@ -37,9 +39,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-[85vh] grid place-items-center px-4 py-12">
+    <div className="relative min-h-[85vh] grid place-items-center px-4 py-12 overflow-hidden">
+      <PhotoBackdrop src={unsplash(PHOTO.berryCake, { w: 1800, h: 1400 })} blur />
       <div className="flex flex-col items-center gap-8">
-        <Logo />
+        <div className="glass rounded-full px-4 py-2">
+          <Logo />
+        </div>
         <FormCard>
           <h1 className="font-display text-2xl font-semibold text-cocoa mb-1">Welcome back</h1>
           <p className="text-sm text-cocoa-soft mb-6">Log in to order or manage your bakery.</p>

@@ -7,6 +7,8 @@ import { extractErrorMessage } from '../../services/errorUtils'
 import Select from '../../components/ui/Select'
 import Alert from '../../components/ui/Alert'
 import Pagination from '../../components/ui/Pagination'
+import PhotoBackdrop from '../../components/ui/PhotoBackdrop'
+import PHOTO, { unsplash } from '../../data/photos'
 
 const SORT_OPTIONS = [
   { value: 'createdAt:desc', label: 'Newest first' },
@@ -79,18 +81,26 @@ export default function PublicCatalogPage() {
     setFilters((f) => ({ ...f, [key]: value, page: 0, ...(key === 'categoryId' ? { subcategoryId: '' } : {}) }))
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
-      <div className="mb-6 flex items-center gap-3">
-        <span className="grid place-items-center w-11 h-11 rounded-full bg-blush text-berry-dark shrink-0">
-          <Cake size={20} />
-        </span>
-        <div>
-          <h1 className="font-display text-2xl sm:text-3xl font-semibold text-cocoa">Browse our cakes</h1>
-          <p className="text-sm text-cocoa-soft">No account needed — sign up when you're ready to order.</p>
+    <div>
+      <div className="relative overflow-hidden">
+        <PhotoBackdrop src={unsplash(PHOTO.vanillaLayerCake, { w: 1800, h: 700 })} className="h-40 sm:h-52" />
+        <div className="relative h-40 sm:h-52 flex items-center">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 w-full">
+            <div className="glass inline-flex items-center gap-3 rounded-2xl px-5 py-4">
+              <span className="grid place-items-center w-11 h-11 rounded-full bg-blush text-berry-dark shrink-0">
+                <Cake size={20} />
+              </span>
+              <div>
+                <h1 className="font-display text-2xl sm:text-3xl font-semibold text-cocoa">Browse our cakes</h1>
+                <p className="text-sm text-cocoa-soft">No account needed — sign up when you're ready to order.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 rounded-2xl bg-card p-4 shadow-sm">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+      <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 glass rounded-2xl p-4">
         <div className="lg:col-span-2">
           <label className="mb-1.5 block text-sm font-medium text-cocoa-soft">Search</label>
           <div className="relative">
@@ -152,9 +162,9 @@ export default function PublicCatalogPage() {
             <Link
               key={p.id}
               to={`/products/${p.id}`}
-              className="group rounded-2xl bg-card overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="group rounded-2xl bg-card/80 backdrop-blur border border-white/60 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
-              <div className="aspect-[4/3] bg-blush-soft grid place-items-center overflow-hidden">
+              <div className="relative aspect-[4/3] bg-blush-soft grid place-items-center overflow-hidden">
                 {p.imageUrl ? (
                   <img
                     src={p.imageUrl}
@@ -164,14 +174,14 @@ export default function PublicCatalogPage() {
                 ) : (
                   <ImageOff size={28} className="text-cocoa-soft" />
                 )}
+                <span className="glass-dark absolute bottom-3 left-3 rounded-full px-3 py-1 text-xs font-semibold text-cream">
+                  ₹{Number(p.basePrice).toFixed(2)}
+                </span>
               </div>
               <div className="p-4">
                 <p className="text-xs text-cocoa-soft">{p.subcategoryName}</p>
                 <h3 className="font-display font-semibold text-cocoa mt-0.5">{p.name}</h3>
-                <div className="mt-2 flex items-center justify-between">
-                  <span className="font-semibold text-berry-dark">₹{Number(p.basePrice).toFixed(2)}</span>
-                  <span className="text-xs text-cocoa-soft">{p.vendorShopName}</span>
-                </div>
+                <p className="mt-1 text-xs text-cocoa-soft">{p.vendorShopName}</p>
               </div>
             </Link>
           ))}
@@ -179,6 +189,7 @@ export default function PublicCatalogPage() {
       )}
 
       <Pagination page={filters.page} totalPages={data.totalPages || 0} onChange={(p) => setFilters((f) => ({ ...f, page: p }))} />
+      </div>
     </div>
   )
 }

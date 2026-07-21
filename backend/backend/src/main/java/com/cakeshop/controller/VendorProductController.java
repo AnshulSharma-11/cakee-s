@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/vendor/products")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class VendorProductController {
 

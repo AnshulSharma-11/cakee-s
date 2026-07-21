@@ -4,7 +4,6 @@ import { ArrowLeft, ImageOff, LogIn, Sparkles, Store } from 'lucide-react'
 import { publicProductService } from '../../services/publicProductService'
 import { extractErrorMessage } from '../../services/errorUtils'
 import { useAuth } from '../../context/AuthContext'
-import { homeForRole } from '../../components/ProtectedRoute'
 import Button from '../../components/ui/Button'
 import Alert from '../../components/ui/Alert'
 
@@ -47,7 +46,7 @@ export default function PublicProductDetailPage() {
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="aspect-square rounded-2xl bg-blush-soft grid place-items-center overflow-hidden">
+        <div className="aspect-square rounded-2xl bg-blush-soft grid place-items-center overflow-hidden shadow-[0_20px_50px_-25px_rgba(74,59,53,0.4)] border border-white/60">
           {product.imageUrl ? (
             <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
           ) : (
@@ -69,7 +68,7 @@ export default function PublicProductDetailPage() {
             Sold by {product.vendorShopName}
           </span>
 
-          <div className="mt-6 rounded-2xl bg-card p-6 shadow-sm">
+          <div className="mt-6 glass rounded-2xl p-6">
             <h2 className="font-display text-lg font-semibold text-cocoa">Ready to order?</h2>
             <p className="mt-1 text-sm text-cocoa-soft">
               {isAuthenticated && user?.role === 'CUSTOMER'

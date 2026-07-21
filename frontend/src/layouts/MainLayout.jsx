@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom'
 import { LogOut, User, LayoutGrid, Search } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
@@ -8,6 +9,14 @@ import Button from '../components/ui/Button'
 export default function MainLayout() {
   const { user, isAuthenticated, logout } = useAuth()
   const navigate = useNavigate()
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const handleLogout = async () => {
     await logout()
@@ -16,7 +25,7 @@ export default function MainLayout() {
 
   return (
     <div className="min-h-screen flex flex-col bg-cream">
-      <header className="sticky top-0 z-30 bg-card/90 backdrop-blur supports-[backdrop-filter]:bg-card/80 shadow-sm">
+      <header className={`sticky top-0 z-30 glass-nav transition-colors ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
           <Logo to={isAuthenticated ? homeForRole(user.role) : '/'} />
 
@@ -51,7 +60,7 @@ export default function MainLayout() {
                   <User size={16} />
                   {user.name}
                 </Link>
-                <Button variant="secondary" onClick={handleLogout}>
+                <Button variant="secondary" onClick={handleLogout} className="bg-cream/60 backdrop-blur">
                   <LogOut size={15} />
                   Log out
                 </Button>
@@ -68,7 +77,6 @@ export default function MainLayout() {
             )}
           </div>
         </div>
-        <div className="scallop-bottom" />
       </header>
 
       <main className="flex-1">

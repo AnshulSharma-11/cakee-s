@@ -46,3 +46,40 @@ h1, h2, h3, h4, .font-display {
   background-size: 24px 14px;
   background-repeat: repeat-x;
 }
+
+/* --- Glassmorphism --- */
+/* Frosted panel for use over photos or textured backgrounds. */
+.glass {
+  background-color: rgb(255 253 249 / 0.62);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgb(255 255 255 / 0.55);
+  box-shadow: 0 8px 32px -12px rgba(74, 59, 53, 0.25);
+}
+
+/* Darker glass variant, for panels sitting on light backgrounds that still
+   need to read as "on glass" (e.g. price/quick-view chips on product photos). */
+.glass-dark {
+  background-color: rgb(74 59 53 / 0.55);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgb(255 255 255 / 0.18);
+}
+
+/* Frosted nav bar: light, subtle, works whether the page behind it is a
+   cream section or a full-bleed cake photo. */
+.glass-nav {
+  background-color: rgb(255 248 240 / 0.55);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-bottom: 1px solid rgb(255 255 255 / 0.5);
+}
+.glass-nav.is-scrolled {
+  background-color: rgb(255 248 240 / 0.88);
+  box-shadow: 0 1px 0 rgba(74, 59, 53, 0.06);
+}
+
+/* Standard scrim for text legibility over cake photography. */
+.photo-overlay {
+  background: linear-gradient(180deg, rgba(42, 27, 18, 0.78) 0%, rgba(42, 27, 18, 0.55) 45%, rgba(42, 27, 18, 0.82) 100%);
+}

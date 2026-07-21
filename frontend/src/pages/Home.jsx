@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Cake, ImageOff, Search, Sparkles, Store, Truck, ShieldCheck, ArrowRight } from 'lucide-react'
+import { Cake, ImageOff, Search, Sparkles, Store, Truck, ShieldCheck, ArrowRight, Star } from 'lucide-react'
 import Button from '../components/ui/Button'
+import PhotoBackdrop from '../components/ui/PhotoBackdrop'
 import { publicProductService } from '../services/publicProductService'
-import heroImage from '../assets/hero.png'
+import PHOTO, { unsplash } from '../data/photos'
 
 const perks = [
   {
@@ -46,16 +47,17 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-blush-soft via-cream to-cream" />
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs font-semibold text-berry-dark shadow-sm">
+      {/* Hero — full-bleed cake photography with a glass content panel */}
+      <section className="relative overflow-hidden min-h-[640px] flex items-center py-28">
+        <PhotoBackdrop src={unsplash(PHOTO.chocolateCake, { w: 2000, h: 1400 })} />
+
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 w-full">
+          <div className="glass rounded-[2rem] px-6 sm:px-12 py-10 sm:py-14 max-w-2xl">
+            <span className="inline-flex items-center gap-2 rounded-full bg-cream/80 px-3 py-1.5 text-xs font-semibold text-berry-dark shadow-sm">
               <Cake size={14} />
               Freshly baked, near you
             </span>
-            <h1 className="mt-5 font-display text-4xl sm:text-5xl font-semibold text-cocoa leading-tight">
+            <h1 className="mt-5 font-display text-4xl sm:text-5xl font-semibold text-cocoa leading-tight text-balance">
               Custom cakes,
               <br />
               baked by hand.
@@ -72,7 +74,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link to="/register">
-                <Button variant="secondary">
+                <Button variant="secondary" className="bg-cream/70 backdrop-blur">
                   <Store size={16} />
                   Sell on CakeShop
                 </Button>
@@ -80,32 +82,37 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-md">
-            <div
-              className="scallop-top absolute -top-3 left-6 right-6 z-10"
-              style={{ '--scallop-color': 'var(--color-caramel-soft)' }}
-            />
-            <img
-              src={heroImage}
-              alt="A decorated custom cake"
-              className="w-full rounded-3xl shadow-[0_30px_60px_-25px_rgba(74,59,53,0.35)] object-cover"
-            />
+          {/* Floating glass rating chip, echoing the "years of excellence" badge
+              on classic bakery templates but sized down and unobtrusive. */}
+          <div className="glass hidden sm:flex items-center gap-3 rounded-2xl px-4 py-3 absolute right-4 sm:right-10 bottom-8 sm:bottom-12">
+            <span className="grid place-items-center w-10 h-10 rounded-full bg-berry text-cream text-sm font-bold">
+              <Star size={16} className="fill-cream" />
+            </span>
+            <div className="leading-tight">
+              <p className="text-sm font-semibold text-cocoa">4.9 out of 5</p>
+              <p className="text-xs text-cocoa-soft">from 1,200+ orders</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Perks */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {perks.map(({ icon: Icon, title, body }) => (
-            <div key={title} className="rounded-2xl bg-card p-5 shadow-sm">
-              <span className="grid place-items-center w-10 h-10 rounded-full bg-blush text-berry-dark">
-                <Icon size={18} />
-              </span>
-              <h3 className="mt-3 font-display font-semibold text-cocoa">{title}</h3>
-              <p className="mt-1 text-sm text-cocoa-soft">{body}</p>
-            </div>
-          ))}
+      {/* Perks — glass cards over a soft second photo band */}
+      <section className="relative py-20 overflow-hidden">
+        <PhotoBackdrop src={unsplash(PHOTO.cupcakes, { w: 2000, h: 900 })} overlay={false} />
+        <div className="absolute inset-0 -z-10 bg-cream/88" />
+
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {perks.map(({ icon: Icon, title, body }) => (
+              <div key={title} className="glass rounded-2xl p-5">
+                <span className="grid place-items-center w-10 h-10 rounded-full bg-blush text-berry-dark">
+                  <Icon size={18} />
+                </span>
+                <h3 className="mt-3 font-display font-semibold text-cocoa">{title}</h3>
+                <p className="mt-1 text-sm text-cocoa-soft">{body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -135,9 +142,9 @@ export default function Home() {
               <Link
                 key={p.id}
                 to={`/products/${p.id}`}
-                className="group rounded-2xl bg-card overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                className="group rounded-2xl bg-card/80 backdrop-blur border border-white/60 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all"
               >
-                <div className="aspect-[4/3] bg-blush-soft grid place-items-center overflow-hidden">
+                <div className="relative aspect-[4/3] bg-blush-soft grid place-items-center overflow-hidden">
                   {p.imageUrl ? (
                     <img
                       src={p.imageUrl}
@@ -147,14 +154,14 @@ export default function Home() {
                   ) : (
                     <ImageOff size={28} className="text-cocoa-soft" />
                   )}
+                  <span className="glass-dark absolute bottom-3 left-3 rounded-full px-3 py-1 text-xs font-semibold text-cream">
+                    ₹{Number(p.basePrice).toFixed(2)}
+                  </span>
                 </div>
                 <div className="p-4">
                   <p className="text-xs text-cocoa-soft">{p.subcategoryName}</p>
                   <h3 className="font-display font-semibold text-cocoa mt-0.5">{p.name}</h3>
-                  <div className="mt-2 flex items-center justify-between">
-                    <span className="font-semibold text-berry-dark">₹{Number(p.basePrice).toFixed(2)}</span>
-                    <span className="text-xs text-cocoa-soft">{p.vendorShopName}</span>
-                  </div>
+                  <p className="mt-2 text-xs text-cocoa-soft">{p.vendorShopName}</p>
                 </div>
               </Link>
             ))}
@@ -171,23 +178,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA banner */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-20">
-        <div className="rounded-3xl bg-berry text-cream px-6 sm:px-12 py-12 text-center relative overflow-hidden">
-          <div
-            className="scallop-bottom absolute bottom-0 left-0 right-0"
-            style={{ '--scallop-color': 'var(--color-cream)' }}
-          />
-          <h2 className="font-display text-2xl sm:text-3xl font-semibold">Have a cake stall of your own?</h2>
-          <p className="mt-2 text-cream/85 max-w-lg mx-auto">
-            List your cakes, manage orders, and reach customers browsing CakeShop — signing up takes a minute.
-          </p>
-          <Link to="/register" className="mt-6 inline-block">
-            <Button className="bg-cream text-berry-dark hover:bg-cream/90">
-              <Store size={16} />
-              Start selling
-            </Button>
-          </Link>
+      {/* CTA banner — photo background with a glass panel */}
+      <section className="relative mx-auto max-w-6xl px-4 sm:px-6 pb-20">
+        <div className="relative rounded-3xl overflow-hidden">
+          <PhotoBackdrop src={unsplash(PHOTO.weddingCake, { w: 1800, h: 700 })} />
+          <div className="relative glass rounded-3xl px-6 sm:px-12 py-12 text-center m-3 sm:m-4">
+            <h2 className="font-display text-2xl sm:text-3xl font-semibold text-cocoa">
+              Have a cake stall of your own?
+            </h2>
+            <p className="mt-2 text-cocoa-soft max-w-lg mx-auto">
+              List your cakes, manage orders, and reach customers browsing CakeShop — signing up
+              takes a minute.
+            </p>
+            <Link to="/register" className="mt-6 inline-block">
+              <Button>
+                <Store size={16} />
+                Start selling
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>
